@@ -9,9 +9,10 @@ __Example:__
 		<tcg-slider
 			id="slider"
 			paginationDisplayFilter="{{ paginationDisplayFilter }}"
-			animationTime="{{ animationTime }}"
+			delay="{{ delay }}"
 			treshold="{{ treshold }}"
-			slides="{{ slides }}">
+			slides="{{ slides }}"
+			speed="{{ speed }}">
 			<div class="slide-item s1">Content 1</div>
 			<div class="slide-item s2">Content 2</div>
 			<div class="slide-item s3">Content 3</div>
@@ -37,9 +38,13 @@ Nodes of the slide item. Example: `this.$.slider.querySelectorAll('.slide-item')
 
 Function that displays the text in each pagination item
 
-#### `animationTime`
+#### `delay`
 
-Milliseconds Integer
+Milliseconds Integer for each animation
+
+#### `speed`
+
+Milliseconds Integer to set auto animation. Null for no animation
 
 #### `treshold`
 
