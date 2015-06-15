@@ -1,0 +1,47 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Test</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+	<script src="../../webcomponentsjs/webcomponents.js"></script>
+	<script src="../../web-component-tester/browser.js"></script>
+	<link href="../tcg-slider-container.html" rel="import">
+</head>
+<body unresolved>
+	<tcg-slider-container
+		id="container"
+		slides="{{ slides }}"
+		animationTime="{{ animationTime }}"
+		treshold="{{ treshold }}"
+		currentPage="{{ currentPage }}">
+			<div class="slide-item s1">Content 1</div>
+			<div class="slide-item s2">Content 2</div>
+			<div class="slide-item s3">Content 3</div>
+			<div class="slide-item s4">Content 4</div>
+			<div class="slide-item s5">Content 5</div>
+	</tcg-slider-container>
+	<script>
+	window.addEventListener('polymer-ready', function(e) {
+		var el = document.querySelector('tcg-slider-container');
+		el.slider = el.querySelectorAll('.slide-item');
+		el.slider[0].style.width = 20;
+		suite('<tcg-slider-container>', function() {
+			test('initializes', function () {
+				assert(el._readied);
+			});
+			test('Swipe gesture events has been created', function() {
+				assert.equal( el._gestureEvents.length, 3);
+			});
+			test('Gesture event listeners has current arguments', function() {
+				for (var i = el._gestureEvents.length - 1; i >= 0; i--) {
+					assert(el._gestureEvents[i].node);
+					assert(el._gestureEvents[i].eventname);
+					assert(el._gestureEvents[i].handler);
+				};
+			});
+		});
+	});
+	</script>
+</body>
+</html>

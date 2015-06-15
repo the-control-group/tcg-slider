@@ -1,0 +1,50 @@
+<link rel="import" href="../polymer/polymer.html">
+<polymer-element name="tcg-slider-pagination" attributes="currentPage slides paginationDisplayFilter">
+	<template>
+		<style>
+		</style>
+		<template repeat="{{ i in _pagination }}">
+			<div
+				class="pagi-item {{ {active: currentPage == i} | tokenList}}"
+				page="{{ i }}"
+				on-tap="{{ onItemSelect }}">{{ i | _paginationDisplayFilter }}</div>
+		</template>
+	</template>
+	<script>
+		Polymer({
+			publish: {
+				currentPage: 0,
+				slides: null,
+				paginationDisplayFilter: null,
+				_pagination: [],
+			},
+			observe: {
+				"slides": "setPagination",
+			},
+			ready: function() {
+				this.setPagination();
+			},
+			setPagination: function() {
+				if( this.slides ) {
+					this.async(function(){
+						var _pagination = [];
+						for (var i = 0; i < this.slides.length; i++) {
+							_pagination.push(i);
+						};
+						this._pagination = _pagination;
+					});
+				}
+			},
+			onItemSelect: function(event,detail,sender) {
+				var i = sender.getAttribute('page');
+				this.currentPage = i;
+			},
+			_paginationDisplayFilter: function(data) {
+				if( typeof data != 'undefined' && this.paginationDisplayFilter ) {
+					return this.paginationDisplayFilter.apply(this,arguments);
+				}
+				return data;
+			},
+		});
+	</script>
+</polymer-element>

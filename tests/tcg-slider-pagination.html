@@ -1,0 +1,35 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Test</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+	<script src="../../webcomponentsjs/webcomponents.js"></script>
+	<script src="../../web-component-tester/browser.js"></script>
+	<link href="../tcg-slider.html" rel="import">
+</head>
+<body unresolved>
+	<tcg-slider
+		id="slider"
+		slides="{{ slides }}"
+		paginationFilter="{{ paginationFilter }}">
+		<div class="slide-item s1">Content 1</div>
+		<div class="slide-item s2">Content 2</div>
+		<div class="slide-item s3">Content 3</div>
+		<div class="slide-item s4">Content 4</div>
+		<div class="slide-item s5">Content 5</div>
+	</tcg-slider>
+	<script>
+	window.addEventListener('polymer-ready', function(e) {
+		var el = document.querySelector('tcg-slider');
+		el.slider = el.querySelectorAll('.slide-item');
+		var pagi = el.$.pagination;
+		suite('<tcg-slider-pagination>', function() {
+			test('initializes', function () {
+				assert(el._readied);
+			});
+		});
+	});
+	</script>
+</body>
+</html>

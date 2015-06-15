@@ -1,0 +1,156 @@
+<link rel="import" href="../polymer/polymer.html">
+<polymer-element name="tcg-slider-container" attributes="animationTime treshold currentPage slides">
+	<template>
+		<style>
+			#container {
+				position: relative;
+				overflow: hidden;
+			}
+			#wrapper {
+				position: absolute;
+				left: 0;
+				right: 0;
+			}
+		</style>
+		<div id="container" touch-action="none">
+			<div id="wrapper">
+				<shadow></shadow>
+			</div>
+		</div>
+	</template>
+	<script src="../jquery/dist/jquery.min.js"></script>
+	<script>
+		Polymer({
+			publish: {
+				animationTime: 400,
+				currentPage: 0,
+				treshold: 100,
+				slides: null,
+				_sliderWidth: 0,
+				_sliderHeight: 0,
+				_gestureEvents: [],
+				_tractStart: 0,
+				_tractEnd: 0,
+				_container: null,
+				_wrapper: null,
+			},
+			observe: {
+				"slides": "setDimensions",
+			},
+			deattached: function() {
+				this.destroyGestureEvents();
+				window.removeEventListener('resize',this._onResize);
+			},
+			ready: function() {
+				this.createGestureEvents();
+				this._container = $(this.$.container);
+				this._wrapper = $(this.$.wrapper);
+				var poly = this;
+				this._onResize = function(event) {
+					poly.job('setDimensions',function() {
+						poly.setDimensions.apply(poly,arguments);
+						poly.fire('done');
+					}, 500);
+				};
+				window.addEventListener('resize',this._onResize);
+			},
+			currentPageChanged: function(oldValue,newValue) {
+				this.goToSlide(newValue);
+			},
+			setDimensions: function() {
+				this.async(function(){
+					var largestHeight = 0;
+					var largestWidth = 0;
+					var slides = $(this.slides);
+					for (var i = this.slides.length - 1; i >= 0; i--) {
+						this.slides[i].removeAttribute('style');
+						if( largestWidth < this.slides[i].clientWidth ) {
+							largestWidth = this.slides[i].clientWidth;
+						}
+						if( largestHeight < this.slides[i].clientHeight ) {
+							largestHeight = this.slides[i].clientHeight;
+						}
+					};
+					slides.each(function(i){
+						$(this).css({
+							left: i*largestWidth,
+							width: largestWidth,
+							height: largestHeight,
+						});
+					});
+					this._container.css({
+						width: largestWidth,
+						height: largestHeight,
+					});
+					this._sliderWidth = largestWidth;
+					this._sliderHeight = largestHeight;
+				});
+			},
+			createGestureEvents: function() {
+				var poly = this;
+				this._gestureEvents = [{
+					node: this.$.wrapper,
+					eventname: 'track',
+					handler: function(event) {
+						poly.onTrack.apply(poly,arguments);
+					},
+				}, {
+					node: this.$.wrapper,
+					eventname: 'trackstart',
+					handler: function(event) {
+						poly.onTrackstart.apply(poly,arguments);
+					},
+				}, {
+					node: this.$.wrapper,
+					eventname: 'trackend',
+					handler: function(event) {
+						poly.onTrackend.apply(poly,arguments);
+					},
+				}];
+
+				for (var i = this._gestureEvents.length - 1; i >= 0; i--) {
+					PolymerGestures.addEventListener(this._gestureEvents[i].node,this._gestureEvents[i].eventname, this._gestureEvents[i].handler);
+				};
+			},
+			destroyGestureEvents: function() {
+				for (var i = this._gestureEvents.length - 1; i >= 0; i--) {
+					PolymerGestures.removeEventListener(this._gestureEvents[i].node,this._gestureEvents[i].eventname, this._gestureEvents[i].handler);
+				};
+			},
+			goToSlide: function(i,callback) {
+				this._wrapper.animate({
+					left: -i*this._sliderWidth,
+				},this.animationTime,callback);
+			},
+			onTrack: function(event) {
+				var diff = event.clientX - this._tractStart;
+				if( diff > 0 && this.currentPage > 0 ) {
+					this._wrapper.css({
+						left: diff - (this.currentPage*this._sliderWidth),
+					});
+				} else if( diff < 0 && this.currentPage < this.slides.length ) {
+					this._wrapper.css({
+						left: diff - (this.currentPage*this._sliderWidth),
+					});
+				}
+			},
+			onTrackstart: function(event) {
+				this._tractStart = event.clientX;
+			},
+			onTrackend: function(event) {
+				this._tractEnd = event.clientX;
+
+				var diff = this._tractStart- this._tractEnd;
+				if( Math.abs(diff) >= this.treshold ) {
+					if( this._tractStart < this._tractEnd && this.currentPage > 0 ) {
+						this.currentPage--;
+					} else if( this._tractStart > this._tractEnd && this.currentPage < this.slides.length ) {
+						this.currentPage++;
+					}
+				} else {
+					this.goToSlide(this.currentPage);
+				}
+			},
+		});
+	</script>
+</polymer-element>

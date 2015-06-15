@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Demo</title>
+	<script src="../webcomponentsjs/webcomponents.min.js"></script>
+	<link rel="import" href="./tcg-slider.html">
+	<style>
+	html,body {
+		margin: 0;
+		padding: 0;
+	}
+	</style>
+</head>
+<body unresolved>
+	<polymer-element name="tcg-slider-example">
+		<template>
+			<style>
+				#slider {
+					position: relative;
+					overflow: hidden;
+				}
+				.slide-item {
+					position: absolute;
+					top: 0;
+					width: 100%;
+					padding: 20px;
+					box-sizing: border-box;
+				}
+				.s1 {
+					background: #ccc;
+				}
+				.s2 {
+					background: #bcc;
+				}
+				.s3 {
+					background: #acc;
+				}
+				.s4 {
+					background: #9cc;
+				}
+				.s5 {
+					background: #8cc;
+				}
+				tcg-slider::shadow tcg-slider-pagination {
+					display: flex;
+					padding: 20px;
+				}
+				tcg-slider::shadow tcg-slider-pagination::shadow .pagi-item {
+					display: inline-block;
+					cursor: pointer;
+					width: 20px;
+					height: 20px;
+					line-height: 20px;
+					border-radius: 50%;
+					text-align: center;
+					background: #d3d3d3;
+					margin: 0 5px;
+				}
+				tcg-slider::shadow tcg-slider-pagination::shadow .pagi-item.active {
+					color: #fff;
+					background: #333;
+				}
+			</style>
+			<tcg-slider
+				id="slider"
+				slides="{{ slides }}"
+				paginationFilter="{{ paginationFilter }}">
+				<div class="slide-item s1">Content 1</div>
+				<div class="slide-item s2">Content 2</div>
+				<div class="slide-item s3">Content 3</div>
+				<div class="slide-item s4">Content 4</div>
+				<div class="slide-item s5">Content 5</div>
+			</tcg-slider>
+		</template>
+		<script>
+		Polymer({
+			ready: function() {
+				this.slides = this.$.slider.querySelectorAll('.slide-item');
+			},
+			paginationFilter: function(data) {
+				if( typeof data != 'undefined' ) {
+					return data+1;
+				}
+				return data;
+			},
+		});
+		</script>
+	</polymer-element>
+	<tcg-slider-example></tcg-slider-example>
+</body>
+</html>

@@ -1,0 +1,31 @@
+{
+  "name": "tcg-slider",
+  "version": "0.1.0",
+  "authors": [
+    "Raymond Chou <raymond.chou@thecontrolgroup.com>"
+  ],
+  "keywords": [
+    "web-component",
+    "web-components",
+    "polymer"
+  ],
+  "main": "tcg-slider.html",
+  "description": "TCG Polymer Slider",
+  "homepage": "https://github.com/the-control-group/tcg-slider/",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "polymer": "Polymer/polymer#^0.5",
+    "jquery": "^2.1.0"
+  },
+  "devDependencies": {
+    "iron-doc-viewer": "PolymerElements/iron-doc-viewer",
+    "web-component-tester": "Polymer/web-component-tester#~2.2.6"
+  }
+}
