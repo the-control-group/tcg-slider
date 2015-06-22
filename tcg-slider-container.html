@@ -53,7 +53,7 @@
 					poly.job('setDimensions',function() {
 						poly.setDimensions.apply(poly,arguments);
 						poly.fire('done');
-					}, 500);
+					}, 30);
 				};
 				window.addEventListener('resize',this._onResize);
 			},
@@ -65,6 +65,11 @@
 					var largestHeight = 0;
 					var largestWidth = 0;
 					var slides = $(this.slides);
+
+					this._container.css({
+						width: '',
+						height: '',
+					});
 					for (var i = this.slides.length - 1; i >= 0; i--) {
 						this.slides[i].removeAttribute('style');
 						if( largestWidth < this.slides[i].clientWidth ) {
