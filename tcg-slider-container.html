@@ -70,15 +70,17 @@
 						width: '',
 						height: '',
 					});
-					for (var i = this.slides.length - 1; i >= 0; i--) {
-						this.slides[i].removeAttribute('style');
-						if( largestWidth < this.slides[i].clientWidth ) {
-							largestWidth = this.slides[i].clientWidth;
+					if( this.slides ) {
+						for (var i = this.slides.length - 1; i >= 0; i--) {
+							this.slides[i].removeAttribute('style');
+							if( largestWidth < this.slides[i].clientWidth ) {
+								largestWidth = this.slides[i].clientWidth;
+							}
+							if( largestHeight < this.slides[i].clientHeight ) {
+								largestHeight = this.slides[i].clientHeight;
+							}
 						}
-						if( largestHeight < this.slides[i].clientHeight ) {
-							largestHeight = this.slides[i].clientHeight;
-						}
-					};
+					}
 					slides.each(function(i){
 						$(this).css({
 							left: i*largestWidth,

@@ -3,11 +3,13 @@
 	<template>
 		<style>
 		</style>
-		<template repeat="{{ i in _pagination }}">
-			<div
-				class="pagi-item {{ {active: currentPage == i} | tokenList}}"
-				page="{{ i }}"
-				on-tap="{{ onItemSelect }}">{{ i | _paginationDisplayFilter }}</div>
+		<template if="{{ _pagination.length > 1 }}">
+			<template repeat="{{ i in _pagination }}">
+				<div
+					class="pagi-item {{ {active: currentPage == i} | tokenList}}"
+					page="{{ i }}"
+					on-tap="{{ onItemSelect }}">{{ i | _paginationDisplayFilter }}</div>
+			</template>
 		</template>
 	</template>
 	<script>
